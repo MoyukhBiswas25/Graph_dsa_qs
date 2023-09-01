@@ -1,0 +1,42 @@
+#include<queue>
+bool isGraphBirpatite(vector<vector<int>> &edges) {
+	int v = edges.size();
+    std::vector<int> col(v, -1);
+    std::vector<std::vector<int>> adj(v);
+
+    // Construct the adjacency list
+    for (int i = 0; i < v; i++) {
+        for (int j = i + 1; j < v; j++) {
+            if (edges[i][j] == 1) {
+                adj[i].push_back(j);
+                adj[j].push_back(i);
+            }
+        }
+    }
+
+    for (int i = 0; i < v; i++) {
+        if (col[i] != -1)
+            continue;
+
+        std::queue<std::pair<int, int>> q;
+        col[i] = 0;
+        q.push({i, 0});
+
+        while (!q.empty()) {
+            int node = q.front().first;
+            int c = q.front().second;
+            q.pop();
+
+            for (auto it : adj[node]) {
+                if (col[it] == -1) {
+                    col[it] = (c + 1) % 2;
+                    q.push({it, col[it]});
+                } else if (col[it] == c) {
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
+
+}
