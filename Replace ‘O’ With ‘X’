@@ -1,0 +1,60 @@
+#include<vector>
+void dfs(char** arr, int n, int m, vector<vector<bool>> & vis, int r, int c){
+    int del_row[] = {0, 0, 1, -1};
+    int del_col[] = {1, -1, 0, 0};
+
+    for(int i = 0; i<4; i++){
+        int row = r + del_row[i];
+        int col = c + del_col[i];
+
+        if(row >= 0 && row < n && col >= 0 && col < m){
+            if(vis[row][col] && arr[row][col]=='O'){
+                vis[row][col] = false;
+                dfs(arr, n, m, vis, row, col);
+            }
+        }
+    }
+}
+
+void replaceOWithX(char** arr, int n, int  m)
+{
+    vector<vector<bool>> vis(n, vector<bool>(m, true));
+
+    for(int i = 0; i<m; i++){
+        if(arr[0][i]=='O'){
+            if(vis[0][i]) {
+              vis[0][i]=false;
+              dfs(arr, n, m, vis, 0, i);
+            }
+        }
+        if(arr[n-1][i]=='O'){
+            if(vis[n-1][i]){
+                vis[n-1][i] = false;
+                dfs(arr, n, m, vis, n-1, i);
+            }
+        }
+    }
+    for(int i = 1; i<n-1; i++){
+        if(arr[i][0]=='O'){
+            if(vis[i][0]){
+                vis[i][0] = false;
+                dfs(arr, n, m, vis, i, 0);
+            }
+        }
+        if(arr[i][m-1]=='O'){
+            if(vis[i][m-1]){
+                vis[i][m-1] = false;
+                dfs(arr, n, m, vis, i, m-1);
+            }
+        }
+    }
+
+    for(int i = 1; i < n-1; i++){
+        for(int j = 1; j<m - 1; j++){
+            if(arr[i][j]=='O' and vis[i][j]){
+                arr[i][j] = 'X';
+            }
+        }
+    }
+
+}
