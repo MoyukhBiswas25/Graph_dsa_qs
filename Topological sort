@@ -1,0 +1,62 @@
+#include<bits/stdc++.h>
+
+void dfs(vector<int>graphs[],vector<int>&vis,stack<int>&s,int nodes){
+
+    vis[nodes]=1;
+
+    for(auto it:graphs[nodes]){
+
+        if(!vis[it]){
+
+            dfs(graphs,vis,s,it);
+
+        }
+
+    }
+
+    s.push(nodes);
+
+}
+
+ 
+
+vector<int> topologicalSort(vector<vector<int>> &graph, int edges, int nodes) {
+
+
+    vector<int>vis(nodes,0);
+
+    vector<int>v[nodes];
+
+    stack<int>s;
+
+    for(auto j:graph){
+
+        v[j[0]].push_back(j[1]);
+
+    }
+
+    for(int i=0;i<nodes;i++){
+
+        if(!vis[i]){
+
+            dfs(v,vis,s,i);
+
+        }
+
+    }
+
+    vector<int>temp;
+
+    while(!s.empty()){
+
+        int d=s.top();
+
+        temp.push_back(d);
+
+        s.pop();
+
+    }
+
+    return temp;
+
+}
